@@ -1,49 +1,86 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
-    <script>
-        function generateCodeVerifier() {
-            var code_verifier = generateRandomString(32)
-            document.getElementById("code_verifier").value = code_verifier
-        }
-        function generateRandomString(length) {
-            var text = "";
-            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            for (var i = 0; i < length; i++) {
-                text += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            return text;
-        }
-        function generateCodeChallenge(code_verifier) {
-            return code_challenge = base64URL(CryptoJS.SHA256(code_verifier))
-        }
-        function base64URL(string) {
-            return string.toString(CryptoJS.enc.Base64).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
-        }
-        function submit() {
-            var code_verifier = document.getElementById("code_verifier").value
-            var code_challenge = generateCodeChallenge(code_verifier)
-            document.getElementById("code_challenge").innerHTML = code_challenge
-            document.getElementById("code_challenge_div").style.display ="block"
-        }
-    </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Online PKCE Generator Tool</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+  <script>
+    function generateCodeVerifier() {
+      var code_verifier = generateRandomString(32)
+      document.getElementById("code_verifier").value = code_verifier
+    }
+    function generateRandomString(length) {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      for (var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+      return text;
+    }
+    function generateCodeChallenge(code_verifier) {
+      return code_challenge = base64URL(CryptoJS.SHA256(code_verifier))
+    }
+    function base64URL(string) {
+      return string.toString(CryptoJS.enc.Base64).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
+    }
+    function submit() {
+      var code_verifier = document.getElementById("code_verifier").value
+      var code_challenge = generateCodeChallenge(code_verifier)
+      document.getElementById("code_challenge").value = code_challenge
+    }
+  </script>
 </head>
+
 <body>
-    <div>
-        <label for="code_verifier">Code Verifier: </label>
-        <input type="text" id="code_verifier" name="code_verifier" size="38">
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Online PKCE Generator Tool
+        </h1>
+        <p class="subtitle">
+          A online tool to generate <strong>code verifier</strong> and <strong>code challenge</strong> for OAuth with PKCE.
+        </p>
+      </div>
     </div>
-    <br>
-    <div style="display:none" id="code_challenge_div">
-        Code Challenge:
-        <span id="code_challenge">
-        </span>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="box">
+        <div class="field">
+          <label class="label">Code Verifier</label>
+          <div class="control">
+            <input class="input" id="code_verifier" type="text" placeholder="OAuth PKCE Code Verifier">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Code Challenge</label>
+          <div class="control">
+            <input class="input is-static" id="code_challenge" value="(To be generated)" readonly>
+          </div>
+        </div>
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item"><button class="button is-link"  onclick="submit()">Generate Code Challenge</button></div>
+            <div class="level-item"><button class="button is-text" onclick="generateCodeVerifier()">Generate Code Verifier</button></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <br>
-    <div>
-        <button onclick="generateCodeVerifier()">Generate Code Verifier</button>
-        <button onclick="submit()">Generate Code Challenge</button>
+  </section>
+  <section class="section">
+    <div class="container">
+      <p>Reference:</p>
+      <ul>
+        <li>
+          <a href="https://tools.ietf.org/html/rfc7636">rfc-7636</a>
+        </li>
+      </ul>
     </div>
+  </section>
 </body>
+
 </html>
