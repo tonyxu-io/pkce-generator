@@ -9,7 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
   <script>
     function generateCodeVerifier() {
-      var code_verifier = generateRandomString(32)
+      var code_verifier = generateRandomString(128)
       document.getElementById("code_verifier").value = code_verifier
     }
     function generateRandomString(length) {
