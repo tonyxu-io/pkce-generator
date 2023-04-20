@@ -10,16 +10,10 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script>
     function generateCodeVerifier() {
-      var code_verifier = generateRandomString(128)
+      var rand = new Uint8Array(32);
+      crypto.getRandomValues(rand);
+      var code_verifier = base64URL(new CryptoJS.lib.WordArray.init(rand));
       document.getElementById("code_verifier").value = code_verifier
-    }
-    function generateRandomString(length) {
-      var text = "";
-      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
-      for (var i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-      }
-      return text;
     }
     function generateCodeChallenge(code_verifier) {
       return code_challenge = base64URL(CryptoJS.SHA256(code_verifier))
@@ -53,6 +47,7 @@
       <div class="box">
         <div class="field">
           <label class="label">Code Verifier</label>
+          <p>This tool serves as an example implementation or for sending manual requests. Never reuse code verifier values.</p>
           <div class="control">
             <textarea class="textarea" id="code_verifier" type="text" placeholder="OAuth PKCE Code Verifier" rows="2"></textarea>
           </div>
